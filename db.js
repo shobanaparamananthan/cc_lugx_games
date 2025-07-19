@@ -29,19 +29,19 @@ const connectWithRetry = async () => {
       console.log("✅ Connected to MySQL!");
       break;
     } catch (err) {
-      console.error(`❌ MySQL not ready (attempt ${attempts + 1}/${maxAttempts}): ${err.message}`);
+      console.error(` MySQL not ready (attempt ${attempts + 1}/${maxAttempts}): ${err.message}`);
       attempts++;
       await sleep(3000);
     }
   }
 
   if (attempts === maxAttempts) {
-    console.error("❌ Could not connect to MySQL after maximum retries.");
+    console.error(" Could not connect to MySQL after maximum retries.");
     process.exit(1);
   }
 };
 
 connectWithRetry();
 
-// ✅ Export the connection object directly
+// Export the connection object directly
 module.exports = connection;
