@@ -43,4 +43,5 @@ const connectWithRetry = async () => {
 
 connectWithRetry();
 
-module.exports = () => connection;
+// ✅ Export the connection object directly
+module.exports = connection;

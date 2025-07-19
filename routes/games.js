@@ -2,12 +2,31 @@ const express = require('express');
 const router = express.Router();
 const db = require('../db');
 
+// Automatically create the `games` table if it doesn't exist
+const createGamesTable = `
+  CREATE TABLE IF NOT EXISTS games (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    category VARCHAR(100),
+    release_date DATE,
+    price DECIMAL(10,2)
+  )
+`;
+
+db.query(createGamesTable, (err) => {
+  if (err) {
+    console.error(" Failed to create games table:", err.message);
+  } else {
+    console.log(" Games table is ready or already exists.");
+  }
+});
+
 // Health check
 router.get('/health', (req, res) => {
   res.send({ status: 'Game Service is running' });
 });
 
-// Add a game
+// Create a game
 router.post('/games', (req, res) => {
   const { name, category, release_date, price } = req.body;
   const sql = 'INSERT INTO games (name, category, release_date, price) VALUES (?, ?, ?, ?)';
