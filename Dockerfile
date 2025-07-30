@@ -1,5 +1,4 @@
-FROM node:18
-
+FROM public.ecr.aws/docker/library/node:18
 # Install netcat (correct package for Debian/Ubuntu)
 RUN apt-get update && apt-get install -y netcat-openbsd
 
