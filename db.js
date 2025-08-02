@@ -2,10 +2,10 @@ const mysql = require('mysql2');
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
 const config = {
-  host: process.env.DB_HOST || 'localhost',
+  host: process.env.DB_HOST || 'mysql',
   user: process.env.DB_USER || 'root',
   password: process.env.DB_PASSWORD || '',
-  database: process.env.DB_NAME || 'test',
+  database: process.env.DB_NAME || 'gamingdb',
   port: process.env.DB_PORT || 3306,
 };
 

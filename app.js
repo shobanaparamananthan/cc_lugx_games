@@ -1,7 +1,9 @@
 const express = require('express');
 const app = express();
 const gamesRouter = require('./routes/games');
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
 
 app.use(express.json());
 app.use('/', gamesRouter);
