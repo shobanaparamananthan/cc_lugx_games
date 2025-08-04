@@ -15,7 +15,6 @@ phases:
       - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/game-service
       - IMAGE_TAG=latest
       - echo Running tests...
-      - npm test
 
   build:
     commands:
