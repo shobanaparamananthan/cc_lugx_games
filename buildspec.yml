@@ -2,21 +2,24 @@ version: 0.2
 
 phases:
   install:
+    runtime-versions:
+      nodejs: 18
     commands:
       - echo Installing dependencies...
+      - npm install
 
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
-      - aws --version
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
       - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/game-service
       - IMAGE_TAG=latest
-      - echo "$REPOSITORY_URI"
+      - echo Running tests...
+      - npm test
 
   build:
     commands:
-      - echo Building the Game Service Docker image...
+      - echo Building Docker image...
       - docker build -t $REPOSITORY_URI:$IMAGE_TAG .
       - docker tag $REPOSITORY_URI:$IMAGE_TAG $REPOSITORY_URI:latest
 
@@ -25,8 +28,14 @@ phases:
       - echo Pushing Docker image to ECR...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - docker push $REPOSITORY_URI:latest
-      - echo Writing image definitions...
-      - printf '[{"name":"game-service","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+
+      - echo Cloning K8s YAML repo...
+      - git clone https://github.com/shobanaparamananthan/lugx-k8s.git
+      - cd lugx-k8s/k8s/
+
+      - echo Deploying game-service to EKS...
+      - kubectl apply -f game-service.yaml
+      - kubectl rollout restart deployment game-service
 
 artifacts:
   files:
