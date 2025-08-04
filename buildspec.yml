@@ -31,7 +31,7 @@ phases:
 
       - echo Cloning K8s YAML repo...
       - git clone https://github.com/shobanaparamananthan/lugx-k8s.git
-      - cd lugx-k8s/k8s/
+      - cd lugx-k8s/
 
       - echo Deploying game-service to EKS...
       - kubectl apply -f game-service.yaml
